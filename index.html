@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+var socket = io('http://localhost:9582');
+socket.on('news', function (data) {
+	console.log(data);
+	socket.emit('my other event', { my: 'data' });
+});
+
+function map(value, fromLow, fromHigh, toLow, toHigh) {
+	return (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow
+}
+
+</script>
+</head>
+<body>
+<div id="area" style="position:absolute; width: 500px; height: 500px; background-color: pink">
+hei
+</div>
+
+<script>
+$("#area").mousemove(function(event) {
+var x = map(event.offsetX, 0, 500, -180, 180);
+var y = map(event.offsetY, 0, 500, -180, 180);
+console.log("x: " + x + ", y: " + y)
+socket.emit("x", x);
+socket.emit("y", y);
+})
+
+</script>
+</body>
+</html>
+
